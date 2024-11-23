@@ -1,4 +1,6 @@
 using Carter;
+using CatalogApi.CustomMiddleware;
+using Marten;
 
 namespace CatalogApi
 {
@@ -10,6 +12,7 @@ namespace CatalogApi
 
 
             // Add Services to the Container 
+
             #region configure Services
 
             builder.Services.AddCarter();
@@ -18,6 +21,12 @@ namespace CatalogApi
             {
                 config.RegisterServicesFromAssembly(typeof(Program).Assembly);
             });
+            builder.Services.AddMarten(option =>
+            {
+                option.Connection(builder.Configuration.GetConnectionString("Database")!);
+            }).UseLightweightSessions();
+
+
 
             #endregion
 
@@ -28,9 +37,12 @@ namespace CatalogApi
 
 
             // Configure the Http request pipeline
+
             #region Configure Middleware
             
             app.MapCarter();
+            app.UseMiddleware<ErrorHandlingMiddleware>();
+
 
             #endregion
 
