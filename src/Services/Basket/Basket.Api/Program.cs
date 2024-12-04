@@ -21,9 +21,8 @@ namespace Basket.Api
 
             #region configure Services
 
-
+            // Application Services
             builder.Services.AddCarter();
-
             builder.Services.AddMediatR(config =>
             {
                 config.RegisterServicesFromAssembly(typeof(Program).Assembly);
@@ -31,6 +30,7 @@ namespace Basket.Api
                 config.AddOpenBehavior(typeof(LoggingBehavior<,>));
             });
 
+            //Data Services
             builder.Services.AddMarten(option =>
             {
                 option.Connection(builder.Configuration.GetConnectionString("Database")!);
@@ -60,8 +60,8 @@ namespace Basket.Api
                 return handler;
             });
 
+            // Cross Cutting Services
             builder.Services.AddExceptionHandler<CustomExceptionHandler>();
-
             builder.Services.AddHealthChecks()
                  .AddNpgSql(builder.Configuration.GetConnectionString("Database")!)
                  .AddRedis(builder.Configuration.GetConnectionString("Redis")!);
