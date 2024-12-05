@@ -21,25 +21,5 @@ namespace Ordering.Domain.Models
         public int Quantity { get; private set; } = default!;
         public decimal Price { get; private set; } = default!;
     }
-
-      public static Order Create(OrderId id, CustomerId customerId, OrderName orderName, Address shippingAddress, Address billingAddress, Payment payment)
-        {
-            var order = new Order
-            {
-                Id = id,
-                CustomerId = customerId,
-                OrderName = orderName,
-                ShippingAddress = shippingAddress,
-                BillingAddress = billingAddress,
-                Payment = payment,
-                Status = OrderStatus.Pending
-            };
-
-            order.AddDomainEvent(new OrderCreatedEvent(order));
-
-            return order;
-        }
-
-
-    }
 }
+
