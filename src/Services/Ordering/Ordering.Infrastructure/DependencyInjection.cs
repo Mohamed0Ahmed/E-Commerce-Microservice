@@ -4,6 +4,7 @@ using Ordering.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Ordering.Infrastructure.Data.Interceptors;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Ordering.Application.Data;
 
 namespace Ordering.Infrastructure
 {
@@ -19,11 +20,13 @@ namespace Ordering.Infrastructure
 
             services.AddDbContext<ApplicationDbContext>((sp, options) =>
             {
-                options.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>());
 
+                options.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>());
                 options.UseSqlServer(connectionString);
+
             });
 
+            services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
 
             return services;
         }
