@@ -2,6 +2,7 @@ using Basket.Api.Data;
 using Basket.Api.Models;
 using BuildingBlocks.Behaviors;
 using BuildingBlocks.Exceptions.Handler;
+using BuildingBlocks.Messaging.MassTransit;
 using Carter;
 using Discount.Grpc;
 using HealthChecks.UI.Client;
@@ -59,6 +60,10 @@ namespace Basket.Api
 
                 return handler;
             });
+
+            // Async Communication Services
+            builder.Services.AddMessageBroker(builder.Configuration);
+
 
             // Cross Cutting Services
             builder.Services.AddExceptionHandler<CustomExceptionHandler>();
